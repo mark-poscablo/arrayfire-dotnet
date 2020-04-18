@@ -48,5 +48,20 @@ namespace ArrayFire
         }
 
         // TODO: Add the other algorithms
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static short MinAll(Array arr)
+        {
+            double r, i;
+            Internal.VERIFY(AFAlgorithm.af_min_all(out r, out i, arr._ptr));
+            return (short)r;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static short MaxAll(Array arr)
+        {
+            double r, i;
+            Internal.VERIFY(AFAlgorithm.af_max_all(out r, out i, arr._ptr));
+            return (short)r;
+        }
     }
 }

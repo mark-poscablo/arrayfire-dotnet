@@ -128,6 +128,7 @@ namespace ArrayFire
 		public bool IsRow { get { bool res; Internal.VERIFY(AFArray.af_is_row(out res, _ptr)); return res; } }
 		public bool IsColumn { get { bool res; Internal.VERIFY(AFArray.af_is_column(out res, _ptr)); return res; } }
 		public bool IsVector { get { bool res; Internal.VERIFY(AFArray.af_is_vector(out res, _ptr)); return res; } }
+		public bool IsComplex { get { bool res; Internal.VERIFY(AFArray.af_is_complex(out res, _ptr)); return res; } }
 #endif
 		#endregion
 
@@ -141,12 +142,24 @@ namespace ArrayFire
 #else
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Array operator +(Array lhs, Array rhs) { IntPtr ptr; Internal.VERIFY(AFArith.af_add(out ptr, lhs._ptr, rhs._ptr, false)); return new Array(ptr); }
+		public static Array operator +(Array lhs, float rhs) {
+			IntPtr ptr;
+			var rhs_array = Data.Constant<float>(rhs, lhs.Dimensions);
+			Internal.VERIFY(AFArith.af_add(out ptr, lhs._ptr, rhs_array._ptr, false));
+			return new Array(ptr);
+		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Array operator -(Array lhs, Array rhs) { IntPtr ptr; Internal.VERIFY(AFArith.af_sub(out ptr, lhs._ptr, rhs._ptr, false)); return new Array(ptr); }
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Array operator *(Array lhs, Array rhs) { IntPtr ptr; Internal.VERIFY(AFArith.af_mul(out ptr, lhs._ptr, rhs._ptr, false)); return new Array(ptr); }
+		public static Array operator *(Array lhs, float rhs) {
+			IntPtr ptr;
+			var rhs_array = Data.Constant<float>(rhs, lhs.Dimensions);
+			Internal.VERIFY(AFArith.af_mul(out ptr, lhs._ptr, rhs_array._ptr, false));
+			return new Array(ptr);
+		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Array operator /(Array lhs, Array rhs) { IntPtr ptr; Internal.VERIFY(AFArith.af_div(out ptr, lhs._ptr, rhs._ptr, false)); return new Array(ptr); }
